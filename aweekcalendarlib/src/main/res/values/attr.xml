@@ -2,6 +2,7 @@
 <resources>
 
     <declare-styleable name="ViewCalender">
+        <attr name="aaTextcolor" format="string|reference" />
     </declare-styleable>
 
 </resources>

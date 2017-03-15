@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:adonisarifi="http://schemas.android.com/apk/res-auto"
     tools:context="com.adonisarifi.aweekcalendar.MainActivity">
 
     <com.adonisarifi.aweekcalendarlib.view.AweekCalendarView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        adonisarifi:aaTextcolor="#332232"
         android:gravity="top"
         android:text="Hello World!" />
 
