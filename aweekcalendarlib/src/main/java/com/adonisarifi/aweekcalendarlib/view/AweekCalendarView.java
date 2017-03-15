@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.adonisarifi.aweekcalendarlib.AweekCalendarAdapter;
 import com.adonisarifi.aweekcalendarlib.R;
 import com.adonisarifi.aweekcalendarlib.utils.CalendarData;
 import com.adonisarifi.aweekcalendarlib.utils.Calendarutil;
@@ -47,12 +46,12 @@ public class AweekCalendarView extends LinearLayout {
 
     private List<CalendarData> calendarDatas;
     private Map<Integer, List> weeks;
-    private int weekPosition;//星期在月份中的位置
+    private int weekPosition;
 
 
     private CalendarData today;
-    private CalendarData theDayOfSelected;//被选中的日期
-    private CalendarData theDayForShow;//用于展示数据的中间变量
+    private CalendarData theDayOfSelected;
+    private CalendarData theDayForShow;
 
     private int count_previous = 0;
     private int count_next = 0;
@@ -67,26 +66,25 @@ public class AweekCalendarView extends LinearLayout {
         init(context, attrs);
     }
 
-    /**
-     * 初始化View
-     */
     private void init(Context context, AttributeSet attrs) {
-        this.context = context;
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_calender, this, true);
-        mIvPrevious = (RelativeLayout) findViewById(R.id.iv_previous);
-        mTvYearMouth = (TextView) findViewById(R.id.tv_year_mouth);
-        mIvNext = (RelativeLayout) findViewById(R.id.iv_next);
-        mRvDay = (ViewFlipper) findViewById(R.id.rv_day);
-        initDatas();
-        initView();
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ViewCalender);
-        array.recycle();
+        try {
+            this.context = context;
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater.inflate(R.layout.view_calender, this, true);
+            mIvPrevious = (RelativeLayout) findViewById(R.id.iv_previous);
+            mTvYearMouth = (TextView) findViewById(R.id.tv_year_mouth);
+            mIvNext = (RelativeLayout) findViewById(R.id.iv_next);
+            mRvDay = (ViewFlipper) findViewById(R.id.rv_day);
+            initDatas();
+            initView();
+            TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ViewCalender);
+            array.recycle();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
     }
 
-    /**
-     * 初始化数据
-     */
     private void initDatas() {
         calendarDatas = new ArrayList<>();
         getToday();//获取当天的数据

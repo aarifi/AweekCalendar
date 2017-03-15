@@ -18,14 +18,11 @@ import java.util.Map;
 
 public class Calendarutil {
 
-    private static int daysOfMonth = 0;      //某月的天数
-    private static int dayOfWeek = 0;        //具体某一天是星期几
+    private static int daysOfMonth = 0;
+    private static int dayOfWeek = 0;
     private static int eachDayOfWeek = 0;
 
-    /**
-     * 获取星期几
-     * * @return
-     */
+
     public static Map<Integer, String> getWeekString( Context mContext) {
         Map<Integer, String> map = new LinkedHashMap<>();
         map.put(1, mContext.getString(R.string.Monday));
@@ -38,9 +35,6 @@ public class Calendarutil {
         return map;
     }
 
-    /**
-     * 判断是否为闰年
-     */
     public static boolean isLeapYear(int year) {
         if (year % 100 == 0 && year % 400 == 0) {
             return true;
@@ -50,9 +44,6 @@ public class Calendarutil {
         return false;
     }
 
-    /**
-     * 得到某月有多少天数
-     */
     public static int getDaysOfMonth(CalendarData day) {
         switch (day.month) {
             case 1:
@@ -81,9 +72,7 @@ public class Calendarutil {
         return daysOfMonth;
     }
 
-    /**
-     * 指定某年中的某月的第一天是星期几
-     */
+
     public static int getWeekdayOfFirstDayInMonth(CalendarData day) {
         Calendar cal = Calendar.getInstance();
         cal.set(day.year, day.month - 1, 1);
@@ -91,17 +80,12 @@ public class Calendarutil {
         return dayOfWeek;
     }
 
-    /**
-     * 指定某年中的某月的最后一天是星期几
-     */
+
     public static int getWeekdayOfEndDayInMonth(CalendarData day) {
-        CalendarData theDayOfNextMonth = getTheDayOfNextMonth(day);//获取上一个月的这一天
-        return getWeekOfLastDay(getWeekdayOfFirstDayInMonth(theDayOfNextMonth));//所在月份的最后一天是星期几;
+        CalendarData theDayOfNextMonth = getTheDayOfNextMonth(day);
+        return getWeekOfLastDay(getWeekdayOfFirstDayInMonth(theDayOfNextMonth));
     }
 
-    /**
-     * 获取某一年的某个月的某一天是星期几
-     */
     public static int getWeekDay(CalendarData day) {
         Calendar cal = Calendar.getInstance();
         cal.set(day.year, day.month - 1, day.day);
@@ -109,23 +93,21 @@ public class Calendarutil {
         return eachDayOfWeek;
     }
 
-    /**
-     * 获取某天所在的整个月的数据（包含用于显示的上个月的天数和下个月的天数）
-     */
+
     public static List<CalendarData> getWholeMonthDay(CalendarData day) {
         List<CalendarData> datas = new ArrayList<>();
-        int weekdayOfFirstDayInMonth = getWeekdayOfFirstDayInMonth(day);//所在月份的第一天是星期几
-        int weekdayOfLastDayInMonth = getWeekdayOfEndDayInMonth(day);//所在月份的最后一天是星期几
-        //添加当月的数据（不包括星期几）
+        int weekdayOfFirstDayInMonth = getWeekdayOfFirstDayInMonth(day);
+        int weekdayOfLastDayInMonth = getWeekdayOfEndDayInMonth(day);
+
         datas.addAll(getWholeMonth(day));
-        //添加上个月几天
+
         for (int i = 0; i < weekdayOfFirstDayInMonth; i++) {
             CalendarData lastDay = getDayOfLastDay(datas.get(0));
             lastDay.isLastMonthDay = true;
             datas.add(0, lastDay);
         }
 
-        //添加下个月的几天
+
         for (int i = 0; i < 6 - weekdayOfLastDayInMonth; i++) {
             CalendarData nextday = getDayOfNextDay(datas.get(datas.size() - 1));
             nextday.isNextMonthDay = true;
@@ -135,13 +117,10 @@ public class Calendarutil {
     }
 
 
-    /**
-     * 获取所在月的所有数据(不包括星期)
-     */
     public static List<CalendarData> getWholeMonth(CalendarData day) {
         List<CalendarData> datas = new ArrayList<>();
-        int monthDay = getDaysOfMonth(day);//所在月份的天数
-        for (int i = 0; i < monthDay; i++) {//添加当月的所有数据
+        int monthDay = getDaysOfMonth(day);
+        for (int i = 0; i < monthDay; i++) {
             CalendarData c = new CalendarData(day.year, day.month, i + 1);
             datas.add(c);
         }
@@ -149,9 +128,6 @@ public class Calendarutil {
     }
 
 
-    /**
-     * 将月信息装换为map对象,获取当月星期
-     */
     public static Map<Integer, List> getWholeWeeks(List<CalendarData> datas) {
         Map<Integer, List> map = new LinkedHashMap<>();
         int weekSize = datas.size() / 7;//当月有几个星期
@@ -165,11 +141,6 @@ public class Calendarutil {
         return map;
     }
 
-    /**
-     * 获取某一天所在星期的位置
-     * <p/>
-     * 如果没有数据，返回0
-     */
     public static int getTheWeekPosition(Map<Integer, List> map, CalendarData day) {
         int position =-1;
         for (Map.Entry<Integer, List> entry : map.entrySet()) {
@@ -186,9 +157,6 @@ public class Calendarutil {
     }
 
 
-    /**
-     * 获取上一天的数据
-     */
     public static CalendarData getDayOfLastDay(CalendarData theday) {
         CalendarData lastday = new CalendarData();
         lastday.week = getWeekOfLastDay(theday.week);
@@ -206,9 +174,6 @@ public class Calendarutil {
 
     }
 
-    /**
-     * 获取下一天的数据
-     */
     public static CalendarData getDayOfNextDay(CalendarData theday) {
         CalendarData nextday = new CalendarData();
         CalendarData theDayOfNextMonth = getTheDayOfNextMonth(theday);
@@ -226,12 +191,9 @@ public class Calendarutil {
 
     }
 
-    /**
-     * 获取上一天是星期几
-     */
     public static int getWeekOfLastDay(int week) {
         int weekOfLastDay;
-        if (week == 0) {//星期天
+        if (week == 0) {
             weekOfLastDay = 6;
         } else {
             weekOfLastDay = week - 1;
@@ -240,12 +202,9 @@ public class Calendarutil {
 
     }
 
-    /**
-     * 获取下一天是星期几
-     */
     public static int getWeekOfNextDay(int week) {
         int weekOfNextDay;
-        if (week == 6) {//星期六
+        if (week == 6) {
             weekOfNextDay = 0;
         } else {
             weekOfNextDay = week + 1;
@@ -254,9 +213,6 @@ public class Calendarutil {
 
     }
 
-    /**
-     * 获取下个的这一天()
-     */
     public static CalendarData getTheDayOfNextMonth(CalendarData day) {
         CalendarData data = new CalendarData();
         int month = day.month;
@@ -272,9 +228,6 @@ public class Calendarutil {
         return data;
     }
 
-    /**
-     * 获取上个月的这一天
-     */
     public static CalendarData getTheDayOfLastMonth(CalendarData day) {
         CalendarData data = new CalendarData();
         int month = day.month;
