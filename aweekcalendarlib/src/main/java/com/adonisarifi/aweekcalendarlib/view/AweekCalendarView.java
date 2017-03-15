@@ -7,7 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -69,8 +68,7 @@ public class AweekCalendarView extends LinearLayout {
     public void init(Context context, AttributeSet attrs) {
         try {
             this.context = context;
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            inflater.inflate(R.layout.view_calender, this, true);
+            inflate(getContext(), R.layout.view_calender, this);
             mIvPrevious = (RelativeLayout) findViewById(R.id.iv_previous);
             mTvYearMouth = (TextView) findViewById(R.id.tv_year_mouth);
             mIvNext = (RelativeLayout) findViewById(R.id.iv_next);
