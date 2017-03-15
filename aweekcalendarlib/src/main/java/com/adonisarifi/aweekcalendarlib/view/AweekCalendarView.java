@@ -66,7 +66,7 @@ public class AweekCalendarView extends LinearLayout {
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    public void init(Context context, AttributeSet attrs) {
         try {
             this.context = context;
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
