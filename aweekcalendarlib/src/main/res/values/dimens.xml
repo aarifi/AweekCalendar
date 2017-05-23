@@ -6,7 +6,7 @@
 
     <dimen name="my_calendar_button_size">25dp</dimen>
     <dimen name="my_calendar_padding">25dp</dimen>
-    <dimen name="my_calendar_week_padding_vertical">10dp</dimen>
+    <dimen name="my_calendar_week_padding_vertical">6dp</dimen>
     <dimen name="my_calendar_day_padding_vertical">0dp</dimen>
     <dimen name="my_calendar_day_size">35dp</dimen>
 </resources>

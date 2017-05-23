@@ -19,8 +19,10 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.adonisarifi.aweekcalendarlib.R;
+import com.adonisarifi.aweekcalendarlib.utils.AweekContract;
 import com.adonisarifi.aweekcalendarlib.utils.CalendarData;
 import com.adonisarifi.aweekcalendarlib.utils.Calendarutil;
+import com.adonisarifi.aweekcalendarlib.utils.OnItemClickLitener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ import java.util.Map;
  * Email "adonisarifi@gmail.com"
  */
 
-public class AweekCalendarView extends LinearLayout {
+public class AweekCalendarView extends LinearLayout implements AweekContract {
     RelativeLayout mIvPrevious;
     TextView mTvYearMouth;
     RelativeLayout mIvNext;
@@ -74,7 +76,7 @@ public class AweekCalendarView extends LinearLayout {
             mTvYearMouth = (TextView) findViewById(R.id.tv_year_mouth);
             mIvNext = (RelativeLayout) findViewById(R.id.iv_next);
             mRvDay = (ViewFlipper) findViewById(R.id.rv_day);
-            initDatas();
+            initDate();
             initView();
             TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ViewCalender);
             array.recycle();
@@ -84,42 +86,67 @@ public class AweekCalendarView extends LinearLayout {
 
     }
 
-    private void initDatas() {
+
+    private float mLastX = -1;
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mLastX = event.getRawX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float dx = mLastX - event.getRawX();
+                if (dx > 80) {
+                    if (count_next < 2) {
+                        count_next++;
+                        count_previous = count_previous - 1;
+                        showNextView(true);
+                    }
+
+                    return true;
+                } else if (dx < -80) {
+                    if (count_previous < 2) {
+                        count_next = count_next - 1;
+                        count_previous++;
+                        showLastView(true);
+                    }
+
+                    return true;
+                }
+                break;
+        }
+        return super.onInterceptTouchEvent(event);
+    }
+
+
+    @Override
+    public void initDate() {
         calendarDatas = new ArrayList<>();
-        getToday();//获取当天的数据
+        getToday();
         theDayOfSelected = today;
         theDayForShow = today;
         getWholeMonthDatas(theDayOfSelected);
         weekPosition = Calendarutil.getTheWeekPosition(weeks, theDayOfSelected);
     }
 
-    /**
-     * 设置整个月的数据
-     */
-    private void getWholeMonthDatas(CalendarData data) {
-        calendarDatas = Calendarutil.getWholeMonthDay(data);//获取某天所在的整个月的数据（包含用于显示的上个月的天数和下个月的天数）
-        weeks = Calendarutil.getWholeWeeks(calendarDatas);//获取当月有几个星期，以及每一星期对应的数据星期数据
-        mTvYearMouth.setText(String.format("%s年%s月", String.valueOf(data.year), String.valueOf(data.month)));
-    }
+    @Override
+    public void initView() {
 
-    /**
-     * 初始化月控件
-     */
-    private void initView() {
-
-        mIvPrevious.setOnClickListener(new OnClickListener() {//跳到上一个月
+        mIvPrevious.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (count_previous <= 4) {
                     count_previous++;
                     count_next--;
-                    showLastView(false);//显示上一个星期/月
+                    showLastView(false);
                 }
 
 
             }
         });
-        mIvNext.setOnClickListener(new OnClickListener() {//跳到下一个月
+        mIvNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (count_next <= 4) {
@@ -128,18 +155,23 @@ public class AweekCalendarView extends LinearLayout {
                     showNextView(false);
 
                 }
-                //显示下一个星期/月
+
             }
         });
-        mGridView = addDayView();
+        mGridView = addDayonView();
         mGridView.setAdapter(new CalendarAdapter(context, weeks.get(weekPosition)));
         mRvDay.addView(mGridView, 0);
     }
 
-    /**
-     * 初始化日期
-     */
-    private GridView addDayView() {
+    @Override
+    public void getWholeMonthDatas(CalendarData data) {
+        calendarDatas = Calendarutil.getWholeMonthDay(data);
+        weeks = Calendarutil.getWholeWeeks(calendarDatas);
+        mTvYearMouth.setText(data.toString());
+    }
+
+    @Override
+    public GridView addDayonView() {
         LayoutParams params = new LayoutParams(
                 AbsListView.LayoutParams.FILL_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         final GridView gridView = new GridView(context);
@@ -159,11 +191,8 @@ public class AweekCalendarView extends LinearLayout {
         return gridView;
     }
 
-
-    /**
-     * 获取今天的参数
-     */
-    private void getToday() {
+    @Override
+    public void getToday() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
         String currentDate = sdf.format(date);
@@ -171,64 +200,26 @@ public class AweekCalendarView extends LinearLayout {
         int month = Integer.parseInt(currentDate.split("-")[1]);
         int day = Integer.parseInt(currentDate.split("-")[2]);
         today = new CalendarData(year, month, day);
-
     }
 
-
-    private float mLastX = -1;
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        float x = 0;
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                x = event.getRawX();
-//                HLog.e(Constant.TAG, ">>>>>>>>>>>>点击" + x);
-//                break;
-//        }
-//        return super.onTouchEvent(event);
-//    }
-
-    /**
-     * scrollview的ontouchEvent和其他的ViewGroup的方法还是很大不同， 该方法一般和ontouchEvent 一起用
-     * onInterceptTouchEvent()主要功能是控制触摸事件的分发，例如是子视图的点击事件还是滑动事件。
-     */
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                mLastX = event.getRawX();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float dx = mLastX - event.getRawX(); //X移动坐标
-                if (dx > 80) { // 向左滑
-                    if (count_next < 2) {
-                        count_next++;
-                        count_previous = count_previous - 1;
-                        showNextView(true);//显示下一个星期/月
-                    }
-
-                    return true;
-                } else if (dx < -80) {
-                    if (count_previous < 2) {
-                        count_next = count_next - 1;
-                        count_previous++;
-                        showLastView(true);//显示上一个星期/月
-                    }
-
-                    return true;
-                }
-                break;
-        }
-        return super.onInterceptTouchEvent(event);
+    public int getMonthSelected() {
+        return theDayOfSelected.month;
     }
 
+    @Override
+    public int getDayOfMonthSelected() {
+        return theDayOfSelected.day;
+    }
 
-    /**
-     * 显示下一个星期/月的数据
-     */
+    @Override
+    public int getYearSelected() {
+        return theDayOfSelected.year;
+    }
+
+    @Override
     public void showNextView(boolean isShowNextWeek) {
-        GridView mGridView = addDayView();
+        GridView mGridView = addDayonView();
         mGridView.setAdapter(new CalendarAdapter(context, getNextWeekDatas(isShowNextWeek)));
         mRvDay.addView(mGridView, 1);
         mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_left_in));
@@ -237,11 +228,9 @@ public class AweekCalendarView extends LinearLayout {
         mRvDay.removeViewAt(0);
     }
 
-    /**
-     * 显示上一个星期/月的数据
-     */
+    @Override
     public void showLastView(boolean isShowLastWeek) {
-        GridView mGridView = addDayView();
+        GridView mGridView = addDayonView();
         mGridView.setAdapter(new CalendarAdapter(context, getLastWeekDatas(isShowLastWeek)));
         mRvDay.addView(mGridView, 1);
         mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_right_in));
@@ -250,17 +239,11 @@ public class AweekCalendarView extends LinearLayout {
         mRvDay.removeViewAt(0);
     }
 
-    /**
-     * 获取下个星期的数据
-     *
-     * @param isShowNextWeek true 获取下各星期的数据，如果false 直接获取下各月第一个星期的数据
-     * @return
-     */
+    @Override
     public List<CalendarData> getNextWeekDatas(boolean isShowNextWeek) {
-        if (weekPosition == weeks.size() - 1 || !isShowNextWeek) {//最后一个星期，加载下一个月的数据，或者直接获取下个月
+        if (weekPosition == weeks.size() - 1 || !isShowNextWeek) {
             theDayForShow = (theDayForShow.isNextMonthDay) ? theDayForShow : Calendarutil.getTheDayOfNextMonth(theDayForShow);
             getWholeMonthDatas(theDayForShow);
-            // 为了让数据连贯，直接跳到第二个星期，这里可能没有数据交叉的情况，不跳到第二个星期 判断这个月的第一天是否是星期天
             weekPosition = (Calendarutil.getWeekdayOfFirstDayInMonth(theDayForShow) == 0 || !isShowNextWeek) ? 0 : 1;
         } else {
             weekPosition++;
@@ -269,14 +252,14 @@ public class AweekCalendarView extends LinearLayout {
         return (List<CalendarData>) weeks.get(weekPosition);
     }
 
+    @Override
     public List<CalendarData> getLastWeekDatas(boolean isShowLastWeek) {
-        if (weekPosition == 0 || !isShowLastWeek) {//第一个星期，加载上一个月的数据,或者直接获取上个月
+        if (weekPosition == 0 || !isShowLastWeek) {
             theDayForShow = (theDayForShow.isLastMonthDay) ? theDayForShow : Calendarutil.getTheDayOfLastMonth(theDayForShow);
             getWholeMonthDatas(theDayForShow);
             if (isShowLastWeek) {
-                // 为了让数据连贯，直接跳到倒数第二个星期，这里可能没有数据交叉的情况，不跳倒数到第二个星期，判断这个月的最后是否是星期六
                 weekPosition = weeks.size() - ((Calendarutil.getWeekdayOfEndDayInMonth(theDayForShow) == 6) ? 1 : 2);
-            } else {//直接获取上个月
+            } else {
                 weekPosition = 0;
             }
         } else {
@@ -285,10 +268,67 @@ public class AweekCalendarView extends LinearLayout {
         return (List<CalendarData>) weeks.get(weekPosition);
     }
 
+    @Override
+    public String getTheDayOfSelected() {
+        if (theDayOfSelected != null) {
+            String sYear = String.valueOf(theDayOfSelected.year);
+            String sMonth = String.valueOf(theDayOfSelected.month);
+            String sDay = String.valueOf(theDayOfSelected.day);
+            return String.format("%s-%s-%s", sYear, (2 > sMonth.length()) ? "0" + sMonth : "" + sMonth, (2 > sDay.length()) ? "0" + sDay : "" + sDay);
+        }
+        return "";
+    }
 
-    /**
-     * 日期列表适配器
-     */
+    @Override
+    public boolean isTodayIsSelectedDay() {
+        return today.isSameDay(theDayForShow) && today.isSameDay(theDayOfSelected);
+    }
+
+    @Override
+    public boolean showToday() {
+        if (!isTodayIsSelectedDay() || weekPosition != Calendarutil.getTheWeekPosition(weeks, today)) {
+            int mode = 0;
+            if (theDayForShow.year > today.year || theDayForShow.month > today.month) {
+                getWholeMonthDatas(today);
+                weekPosition = Calendarutil.getTheWeekPosition(weeks, today);
+                mode = 2;
+            } else if (theDayForShow.year < today.year || theDayForShow.month < today.month) {
+                getWholeMonthDatas(today);
+                weekPosition = Calendarutil.getTheWeekPosition(weeks, today);
+                mode = 1;
+            } else {
+                int position = Calendarutil.getTheWeekPosition(weeks, today);
+                if (weekPosition < position) {
+                    mode = 1;
+                } else if (weekPosition > position) {
+                    mode = 2;
+                }
+                weekPosition = position;
+            }
+
+            theDayOfSelected = today;
+            theDayForShow = today;
+            GridView mGridView = addDayonView();
+            mGridView.setAdapter(new CalendarAdapter(context, weeks.get(weekPosition)));
+            mRvDay.addView(mGridView, 1);
+            if (mode == 2) {
+                mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_right_in));
+                mRvDay.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.push_right_out));
+            } else if (mode == 1) {
+                mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_left_in));
+                mRvDay.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.push_left_out));
+            } else {
+                mRvDay.setInAnimation(null);
+                mRvDay.setOutAnimation(null);
+            }
+            mRvDay.showNext();
+            mRvDay.removeViewAt(0);
+            return false;
+        }
+        return true;
+    }
+
+
     public class CalendarAdapter extends AweekCalendarAdapter {
         List<CalendarData> datas;
 
@@ -338,91 +378,9 @@ public class AweekCalendarView extends LinearLayout {
     }
 
 
-    /**
-     * ItemClick的回调接口
-     */
-    public interface OnItemClickLitener {
-        void onItemClick(View view, int position);
-    }
-
-    /**
-     * 设置回调接口
-     */
     public void setOnItemClickLitener(OnItemClickLitener mOnItemClickLitener) {
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
-    /**
-     * 获取被选中日期的日期字符串
-     *
-     * @return
-     */
-    public String getTheDayOfSelected() {
-        if (theDayOfSelected != null) {
-            String sYear = String.valueOf(theDayOfSelected.year);
-            String sMonth = String.valueOf(theDayOfSelected.month);
-            String sDay = String.valueOf(theDayOfSelected.day);
-            return String.format("%s-%s-%s", sYear, (2 > sMonth.length()) ? "0" + sMonth : "" + sMonth, (2 > sDay.length()) ? "0" + sDay : "" + sDay);
-        }
-        return "";
-    }
-
-    /**
-     * 判断当前选中日期是否是今天
-     *
-     * @return
-     */
-    public boolean isTodayIsSelectedDay() {
-        return today.isSameDay(theDayForShow) && today.isSameDay(theDayOfSelected);
-    }
-
-
-    /**
-     * 判断显示的是否是今天，如果不是，跳转到今天
-     *
-     * @return 是否是今天
-     */
-    public boolean showToday() {
-        if (!isTodayIsSelectedDay() || weekPosition != Calendarutil.getTheWeekPosition(weeks, today)) {//如果显示的不是当天
-            int mode = 0;//动画模式（0 没有动画，1 向左动 ， 2 向右动）
-            if (theDayForShow.year > today.year || theDayForShow.month > today.month) {//下一个月
-                getWholeMonthDatas(today);
-                weekPosition = Calendarutil.getTheWeekPosition(weeks, today);
-                mode = 2;
-            } else if (theDayForShow.year < today.year || theDayForShow.month < today.month) {//上一个月
-                getWholeMonthDatas(today);
-                weekPosition = Calendarutil.getTheWeekPosition(weeks, today);
-                mode = 1;
-            } else {//本月
-                int position = Calendarutil.getTheWeekPosition(weeks, today);
-                if (weekPosition < position) {//上个星期
-                    mode = 1;
-                } else if (weekPosition > position) {//下个星期
-                    mode = 2;
-                }
-                weekPosition = position;
-            }
-
-            theDayOfSelected = today;
-            theDayForShow = today;
-            GridView mGridView = addDayView();
-            mGridView.setAdapter(new CalendarAdapter(context, weeks.get(weekPosition)));
-            mRvDay.addView(mGridView, 1);
-            if (mode == 2) {
-                mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_right_in));
-                mRvDay.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.push_right_out));
-            } else if (mode == 1) {
-                mRvDay.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.push_left_in));
-                mRvDay.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.push_left_out));
-            } else {
-                mRvDay.setInAnimation(null);
-                mRvDay.setOutAnimation(null);
-            }
-            mRvDay.showNext();
-            mRvDay.removeViewAt(0);
-            return false;
-        }
-        return true;
-    }
 
 }

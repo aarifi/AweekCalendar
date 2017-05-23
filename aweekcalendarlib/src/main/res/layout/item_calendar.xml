@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
+        android:textColor="@color/secondary_text"
         android:id="@+id/tv_calendar_week"
         android:paddingBottom="@dimen/my_calendar_week_padding_vertical"
         android:paddingTop="@dimen/my_calendar_week_padding_vertical"

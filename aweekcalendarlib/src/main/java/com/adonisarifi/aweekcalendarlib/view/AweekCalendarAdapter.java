@@ -16,13 +16,9 @@ import java.util.List;
  */
 
 public abstract class AweekCalendarAdapter<T> extends BaseAdapter {
-    /**
-     * 上下文实例
-     */
+
     protected Context mContext;
-    /**
-     * 数据列表
-     */
+
     protected List data;
 
     protected AweekCalendarAdapter(Context context, List<T> data) {
@@ -52,14 +48,9 @@ public abstract class AweekCalendarAdapter<T> extends BaseAdapter {
         return position;
     }
 
-    /**
-     * 虚函数，继承此类的需要指定item的layout布局文件
-     */
+
     public abstract int getItemResource();
 
-    /**
-     * 虚函数，继承此类的需要通过此函数绑定数据
-     */
     public abstract View getItemView(int position, View convertView, ViewHolder holder);
 
     @Override
@@ -82,11 +73,6 @@ public abstract class AweekCalendarAdapter<T> extends BaseAdapter {
         return getItemView(position, view, holder);
     }
 
-    /**
-     * 添加elem中的所有数据
-     *
-     * @param elem list数据
-     */
     public void addAll(List elem) {
         if (elem == null) {
             elem = new ArrayList();
@@ -95,22 +81,12 @@ public abstract class AweekCalendarAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * 删除某个数据
-     *
-     * @param index 指定位置
-     */
     public void remove(int index) {
         data.remove(index);
         notifyDataSetChanged();
     }
 
 
-    /**
-     * 替换所有数据
-     *
-     * @param elem list数据
-     */
     public void replaceAll(List elem) {
         data.clear();
         if (elem != null) {
@@ -119,24 +95,16 @@ public abstract class AweekCalendarAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    /**
-     * 清除所有数据
-     */
     public void clear() {
         data.clear();
         notifyDataSetChanged();
     }
 
-    /**
-     * 更新所有数据
-     */
     public void notifyDataChanged() {
         notifyDataSetChanged();
     }
 
-    /**
-     * 静态ViewHolder，优化加载数据
-     */
+
     public class ViewHolder {
         private SparseArray<View> views = new SparseArray<View>();
         private View convertView;

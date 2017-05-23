@@ -9,9 +9,15 @@
 
     <com.adonisarifi.aweekcalendarlib.view.AweekCalendarView
         android:layout_width="wrap_content"
+        android:id="@+id/aweek"
         android:layout_height="wrap_content"
-        adonisarifi:aaTextcolor="#332232"
         android:gravity="top"
         android:text="Hello World!" />
+    
+    <FrameLayout
+        android:id="@+id/cont"
+        android:layout_below="@+id/aweek"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import java.util.List;
  */
 
 public interface AweekContract {
+
     void initDate();
 
     void initView();
@@ -20,6 +21,12 @@ public interface AweekContract {
     GridView addDayonView();
 
     void getToday();
+
+    int getMonthSelected();
+
+    int getDayOfMonthSelected();
+
+    int getYearSelected();
 
     void showNextView(boolean isShowNextWeek);
 
