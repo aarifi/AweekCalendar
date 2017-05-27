@@ -1,26 +1,26 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider" />
+        android:background="@color/divider"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:visibility="gone"
         android:background="@color/divider"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/my_calendar_padding"
-        android:paddingRight="@dimen/my_calendar_padding">
+        android:paddingRight="@dimen/my_calendar_padding"
+        android:visibility="gone">
 
         <RelativeLayout
-            android:id="@+id/iv_previous"
+            android:id="@+id/iv_previous1"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -37,14 +37,15 @@
         <TextView
             android:id="@+id/tv_year_mouth"
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:textColor="@color/white"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="gone"
             tools:text="2016-01-01" />
 
         <RelativeLayout
-            android:id="@+id/iv_next"
+            android:id="@+id/iv_next1"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -61,12 +62,42 @@
     </RelativeLayout>
 
 
+    <RelativeLayout
+        android:id="@+id/iv_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="17dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/my_calendar_button_size"
+            android:layout_height="@dimen/my_calendar_button_size"
+            android:src="@drawable/ic_keyboard_arrow_left_black_24px" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/iv_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="17dp">
+
+        <ImageView
+            android:layout_width="@dimen/my_calendar_button_size"
+            android:layout_height="@dimen/my_calendar_button_size"
+            android:src="@drawable/ic_keyboard_arrow_right_black_24px" />
+    </RelativeLayout>
+
     <ViewFlipper
+        android:layout_toRightOf="@+id/iv_previous"
         android:id="@+id/rv_day"
+        android:layout_toLeftOf="@+id/iv_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/my_calendar_day_padding_vertical"
         android:paddingTop="@dimen/my_calendar_day_padding_vertical" />
 
-</LinearLayout>
+</RelativeLayout>
 

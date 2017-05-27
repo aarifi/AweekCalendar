@@ -137,10 +137,10 @@ public class AweekCalendarView extends LinearLayout implements AweekContract {
         mIvPrevious.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (count_previous <= 4) {
+                if (count_previous < 2) {
+                    count_next = count_next - 1;
                     count_previous++;
-                    count_next--;
-                    showLastView(false);
+                    showLastView(true);
                 }
 
 
@@ -149,11 +149,10 @@ public class AweekCalendarView extends LinearLayout implements AweekContract {
         mIvNext.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (count_next <= 4) {
+                if (count_next < 2) {
                     count_next++;
-                    count_previous--;
-                    showNextView(false);
-
+                    count_previous = count_previous - 1;
+                    showNextView(true);
                 }
 
             }
