@@ -3,7 +3,7 @@
     <color name="primary">#A227E3</color>
     <color name="primary_dark">#483194</color>
     <color name="primary_light">#FFCDD2</color>
-    <color name="accent">#e42933</color>
+    <color name="accent">#9c74ff</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
@@ -19,4 +19,5 @@
     <color name="color_d1">#d1d1d1</color>
     <color name="color_88">#888888</color>
     <color name="color_orange">#ef9200</color>
+
 </resources>

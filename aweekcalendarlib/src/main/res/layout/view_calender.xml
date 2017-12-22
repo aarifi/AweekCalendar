@@ -31,7 +31,7 @@
                 android:layout_height="@dimen/my_calendar_button_size"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_keyboard_arrow_left_black_24px" />
+                android:src="@drawable/ic_back" />
         </RelativeLayout>
 
         <TextView
@@ -56,7 +56,7 @@
                 android:layout_height="@dimen/my_calendar_button_size"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_keyboard_arrow_right_black_24px" />
+                android:src="@drawable/ic_back" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -73,7 +73,7 @@
         <ImageView
             android:layout_width="@dimen/my_calendar_button_size"
             android:layout_height="@dimen/my_calendar_button_size"
-            android:src="@drawable/ic_keyboard_arrow_left_black_24px" />
+            android:src="@drawable/ic_back" />
     </RelativeLayout>
 
 
@@ -87,7 +87,7 @@
         <ImageView
             android:layout_width="@dimen/my_calendar_button_size"
             android:layout_height="@dimen/my_calendar_button_size"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24px" />
+            android:src="@drawable/ic_forward" />
     </RelativeLayout>
 
     <ViewFlipper

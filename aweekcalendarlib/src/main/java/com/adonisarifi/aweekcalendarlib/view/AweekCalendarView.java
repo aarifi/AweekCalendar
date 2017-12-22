@@ -349,17 +349,16 @@ public class AweekCalendarView extends LinearLayout implements AweekContract {
             weekView.setText(Calendarutil.getWeekString(mContext).get(position));
             dayView.setText(String.valueOf(calendar.day));
             dayView.setSelected(false);
-            if (calendar.isSameDay(theDayOfSelected)) {//被选中的日期是白的
+            if (calendar.isSameDay(theDayOfSelected)) {
                 dayView.setTextColor(getResources().getColor(R.color.white));
-                dayView.setSelected(true);//设置选中背景
-            } else if (calendar.isLastMonthDay || calendar.isNextMonthDay) {//上一个月、下一个月的日期是灰色的
+                dayView.setSelected(true);
+            } else if (calendar.isLastMonthDay || calendar.isNextMonthDay) {
                 dayView.setTextColor(getResources().getColor(R.color.color_d1));
-            } else if (calendar.isSameDay(today)) {//当天的日期是橘黄色的
+            } else if (calendar.isSameDay(today)) {
                 dayView.setTextColor(getResources().getColor(R.color.color_orange));
             } else {
                 dayView.setTextColor(getResources().getColor(R.color.color_88));
             }
-            //如果设置了回调，则设置点击事件
             dayView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
