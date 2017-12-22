@@ -44,6 +44,7 @@ dependencies {
 
 //compile 'com.github.aarifi:AweekCalendar:0.1.0'
 
+    compile 'com.github.jitpack-io:android-jitpack-library-example:1.5'
 
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
