@@ -12,7 +12,7 @@
 
     <item android:state_selected="true">
         <shape android:shape="oval">
-            <solid android:color="#9c74ff"/>
+            <solid android:color="@color/accent"/>
             <size
                 android:height="10dp"
                 android:width="10dp" />

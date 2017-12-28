@@ -12,6 +12,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -42,7 +43,9 @@ dependencies {
     // compile 'com.jakewharton:butterknife:8.4.0'
     // annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
-//compile 'com.github.aarifi:AweekCalendar:0.1.0'
+
+    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+
 
     compile 'com.github.jitpack-io:android-jitpack-library-example:1.5'
 
