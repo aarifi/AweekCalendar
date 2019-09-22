@@ -57,7 +57,7 @@
                 android:layout_height="@dimen/my_calendar_button_size"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_arrow_left" />
+                app:srcCompat="@drawable/ic_arrow_left" />
         </RelativeLayout>
 
     </RelativeLayout>
