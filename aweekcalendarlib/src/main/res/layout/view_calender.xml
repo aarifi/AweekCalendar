@@ -88,7 +88,7 @@
         <ImageView
             android:layout_width="@dimen/my_calendar_button_size"
             android:layout_height="@dimen/my_calendar_button_size"
-            app:srcCompat="@drawable/ic_next" />
+            android:src="@drawable/ic_next" />
     </RelativeLayout>
 
     <ViewFlipper
