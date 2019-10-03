@@ -32,7 +32,7 @@
                 android:layout_height="@dimen/my_calendar_button_size"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_arrow_left" />
+                app:srcCompat="@drawable/ic_left_arrow" />
         </RelativeLayout>
 
         <TextView
@@ -57,7 +57,7 @@
                 android:layout_height="@dimen/my_calendar_button_size"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_arrow_left" />
+                app:srcCompat="@drawable/ic_left_arrow" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -74,7 +74,7 @@
         <ImageView
             android:layout_width="@dimen/my_calendar_button_size"
             android:layout_height="@dimen/my_calendar_button_size"
-            app:srcCompat="@drawable/ic_arrow_left" />
+            app:srcCompat="@drawable/ic_left_arrow" />
     </RelativeLayout>
 
 
@@ -88,17 +88,17 @@
         <ImageView
             android:layout_width="@dimen/my_calendar_button_size"
             android:layout_height="@dimen/my_calendar_button_size"
-            android:src="@drawable/ic_next" />
+            android:src="@drawable/ic_right_arrow" />
     </RelativeLayout>
 
     <ViewFlipper
-        android:layout_toRightOf="@+id/iv_previous"
         android:id="@+id/rv_day"
-        android:layout_toLeftOf="@+id/iv_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/my_calendar_day_padding_vertical"
-        android:paddingTop="@dimen/my_calendar_day_padding_vertical" />
+        android:layout_toLeftOf="@+id/iv_next"
+        android:layout_toRightOf="@+id/iv_previous"
+        android:paddingTop="@dimen/my_calendar_day_padding_vertical"
+        android:paddingBottom="@dimen/my_calendar_day_padding_vertical" />
 
 </RelativeLayout>
 
