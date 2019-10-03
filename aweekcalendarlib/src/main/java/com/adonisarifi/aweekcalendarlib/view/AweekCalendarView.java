@@ -172,7 +172,7 @@ public class AweekCalendarView extends LinearLayout implements AweekContract {
     @Override
     public GridView addDayonView() {
         LayoutParams params = new LayoutParams(
-                AbsListView.LayoutParams.FILL_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+                AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         final GridView gridView = new GridView(context);
         gridView.setNumColumns(7);
         gridView.setGravity(Gravity.CENTER_VERTICAL);
