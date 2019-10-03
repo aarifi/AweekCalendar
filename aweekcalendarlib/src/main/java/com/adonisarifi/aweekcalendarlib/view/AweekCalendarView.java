@@ -73,7 +73,7 @@ public class AweekCalendarView extends LinearLayout implements AweekContract {
             this.context = context;
             LayoutInflater.from(context).inflate(R.layout.view_calender, this, true);
             mIvPrevious = (RelativeLayout) findViewById(R.id.iv_previous);
-            mTvYearMouth = (TextView) findViewById(R.id.tv_year_mouth);
+          mTvYearMouth = (TextView) findViewById(R.id.tv_year_mouth);
             mIvNext = (RelativeLayout) findViewById(R.id.iv_next);
             mRvDay = (ViewFlipper) findViewById(R.id.rv_day);
             initDate();
